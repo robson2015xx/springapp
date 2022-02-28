@@ -1,33 +1,27 @@
 package com.springapp.models;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import lombok.ToString;
-
 @Entity
-@ToString
-
 public class Product {
 
+	private Long id;
+	private String name;
+	private float price;
+
+	public Product() {
+	}
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	
-	@Column(name = "product")
-	private String name;
-	
-	@Column(name = "price")
-	private Double price;
-
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
-
-	public void setId(int id) {
+	
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -39,11 +33,11 @@ public class Product {
 		this.name = name;
 	}
 
-	public Double getPrice() {
+	public float getPrice() {
 		return price;
 	}
 
-	public void setPrice(Double price) {
+	public void setPrice(float price) {
 		this.price = price;
 	}
 	
