@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org" xmlns:layout="http://ultraq.net.nz/thymeleaf/layout">
+
+<head>
+	<title>SpringApp</title>
+</head>
+
+<body>
+
+	<h1>Lista de Produtos</h1>
+
+	<form method="get" action="/">
+		<button type="submit">MENU</button>
+	</form>
+
+	<div th:each="product : ${products}">
+		<div class="row">
+			<p><span> th:text="${product.name}"</span></p>
+			<p><span> th:text="${product.price}"</span></p>
+		</div>
+	</div>
+</body>
+
+</html>

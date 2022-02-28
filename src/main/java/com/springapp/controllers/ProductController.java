@@ -6,41 +6,29 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.springapp.models.Product;
 import com.springapp.repository.ProductRepository;
 
-@RestController
+@Controller
 @RequestMapping(path = "/stock")
 public class ProductController {
-	
+
 	@Autowired
 	ProductRepository stock;
-	
-	@GetMapping
-	public ResponseEntity<List<Product>> getAllProducts() {
-		try {
-			List<Product> list = stock.findAll();
-			
-			if (list.isEmpty() || list.size() == 0) {
-				return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-			}
-			
-			return new ResponseEntity<>(list, HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	@RequestMapping
+	public ModelAndView getAllProducts() {
+			ModelAndView mv = new ModelAndView("/stock/stockProducts");
+			List<Product> products = stock.findAll();
+			mv.addObject("products", products);
+			return mv;
 	}
 	
-	@GetMapping(path = "/{id}")
+	@RequestMapping(path = "/find/{id}")
 	public ResponseEntity<Optional<Product>> getById(@PathVariable Long id) {
 		Optional<Product> product = stock.findById(id);
 		if (product.isPresent()) {
@@ -49,16 +37,13 @@ public class ProductController {
 		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	}
 	
-	@PostMapping
-	public ResponseEntity<Product> saveCustomer(@RequestBody Product product) {
-		try {
-			return new ResponseEntity<>(stock.save(product), HttpStatus.CREATED);
-		} catch (Exception e) {
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
+	@RequestMapping("/add")
+	public String addProduct(Product product) {
+		stock.save(product);
+		return "stock/formStock";
 	}
-	
-	@PutMapping(value = "/{id}")
+	/* Adaptando para Mysql
+	@RequestMapping(value = "/edit/{id}")
 	public ResponseEntity<Product> update(@PathVariable Long id, @RequestBody Product newProduct) {
 		return stock.findById(id)
 				.map(product -> {
@@ -69,7 +54,7 @@ public class ProductController {
 				}).orElse(ResponseEntity.notFound().build());
 	}
 	
-	@DeleteMapping(path = "/{id}")
+	@RequestMapping(path = "/delete/{id}")
 	public ResponseEntity<HttpStatus> deleteProduct(@PathVariable Long id) {
 		try {
 			Optional<Product> product = stock.findById(id);
@@ -81,4 +66,5 @@ public class ProductController {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
+	*/
 }
