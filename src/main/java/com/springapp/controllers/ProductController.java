@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.springapp.models.Product;
-import com.springapp.repository.ProductRepository;
+import com.springapp.entities.Product;
+import com.springapp.repositories.ProductRepository;
 
 @RestController
 @RequestMapping("/stock")
@@ -32,7 +32,7 @@ public class ProductController {
 	}
 
 	@PostMapping
-	public ResponseEntity<Product> saveCustomer(@RequestBody Product product) {
+	public ResponseEntity<Product> saveProduct(@RequestBody Product product) {
 		return ResponseEntity.status(HttpStatus.CREATED).body(stock.save(product));
 	}
 
